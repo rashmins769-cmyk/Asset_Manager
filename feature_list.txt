@@ -1,0 +1,33 @@
+====================================================================
+               AssetLink - Asset Management System
+====================================================================
+
+1. UNDERSTANDING OF CLIENT'S REQUIREMENTS
+The client needs a straightforward and reliable software solution to track company assets and associate them with specific employees. The core goal is to maintain clear visibility into who is currently holding which asset at any given time, preventing loss and ensuring accountability across the organization.
+
+2. CREATIVE FREEDOMS TAKEN
+* Product Name: Appointed the name "AssetLink" to give the software a professional identity.
+* Scope Expansion: Beyond basic tracking, I included a feature to categorize assets (e.g., Laptops, Mobile Devices, Software Licenses) to make reporting and filtering more organized.
+* User Interface: Conceived a simple "Asset Dashboard" interface where an administrator can quickly overview unassigned vs. assigned items.
+
+3. ASSUMPTIONS MADE ABOUT CLIENT'S REQUIREMENTS
+* The company currently tracks assets manually (e.g., using spreadsheets), resulting in a need for a more automated system.
+* Each employee has a unique identifier (like an Employee ID or company email address).
+* Each internal asset has a unique physical tag or serial number that can be used for identification in the software.
+* There will be at least two user roles: "Admin" (can add/assign assets) and "Employee" (can view their currently assigned assets).
+
+4. LIST OF FEATURES
+* User & Role Management: Secure login system with distinct views for Admins and standard Employees.
+* Asset Inventory Dashboard: A bird's-eye view displaying total assets, assigned assets, and available stock.
+* Employee Directory Integration: A central list of all employees and the specific items currently assigned to each of them.
+* Check-in / Check-out System: A quick workflow to formally assign an asset to an employee and to mark it as 'returned' when handed back in.
+* Asset History Log: An audit trail for every individual asset, showing its complete assignment history chronologically.
+* Asset Categorization: Grouping assets into distinct categories (Hardware, Software, Furniture, etc.) for easier management.
+
+5. QUESTIONS FOR THE NEXT CLIENT MEETING
+* Do you require a barcode or QR code scanning feature to speed up the check-in and check-out process?
+* Should employees have the ability to explicitly 'accept' an asset assignment in the system, or will it be purely admin-managed?
+* Roughly how many employees and how many total assets will the system need to handle in its initial deployment?
+* Do you want the software to track maintenance schedules, depreciation, or notify you when an item's warranty is expiring?
+* Is there an existing employee database (like Active Directory) that this software should integrate with?
+====================================================================

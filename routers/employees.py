@@ -3,13 +3,14 @@ from sqlalchemy.orm import Session
 from typing import List
 import models, schemas
 from database import get_db
+from auth import RequirePrivilege
 
 router = APIRouter(
     prefix="/api/employees",
     tags=["Employees"]
 )
 
-@router.post("/", response_model=schemas.EmployeeResponse, status_code=201)
+@router.post("/", response_model=schemas.EmployeeResponse, status_code=201, dependencies=[Depends(RequirePrivilege('manage:users'))])
 def add_employee(employee: schemas.EmployeeCreate, db: Session = Depends(get_db)):
     """
     Add a New Employee
@@ -60,7 +61,7 @@ def get_employee_active_assets(employee_id: int, db: Session = Depends(get_db)):
     ).all()
     return assignments
 
-@router.delete("/{employee_id}")
+@router.delete("/{employee_id}", dependencies=[Depends(RequirePrivilege('manage:users'))])
 def deactivate_employee(employee_id: int, db: Session = Depends(get_db)):
     """
     Deactivate Employee

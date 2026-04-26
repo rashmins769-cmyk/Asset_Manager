@@ -4,13 +4,14 @@ from typing import List
 from datetime import datetime
 import models, schemas
 from database import get_db
+from auth import RequirePrivilege
 
 router = APIRouter(
     prefix="/api/assignments",
     tags=["Assignments"]
 )
 
-@router.post("/", response_model=schemas.AssignmentResponse, status_code=201)
+@router.post("/", response_model=schemas.AssignmentResponse, status_code=201, dependencies=[Depends(RequirePrivilege('manage:inventory'))])
 def assign_asset(assignment: schemas.AssignmentCreate, db: Session = Depends(get_db)):
     """
     Assign an Item to an Employee (Check-out)
@@ -38,7 +39,7 @@ def assign_asset(assignment: schemas.AssignmentCreate, db: Session = Depends(get
     db.refresh(db_assignment)
     return db_assignment
 
-@router.put("/{assignment_id}/return", response_model=schemas.AssignmentResponse)
+@router.put("/{assignment_id}/return", response_model=schemas.AssignmentResponse, dependencies=[Depends(RequirePrivilege('manage:inventory'))])
 def return_asset(assignment_id: int, db: Session = Depends(get_db)):
     """
     Return an Assigned Item (Check-in)

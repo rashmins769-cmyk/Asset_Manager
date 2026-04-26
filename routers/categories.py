@@ -3,13 +3,14 @@ from sqlalchemy.orm import Session
 from typing import List
 import models, schemas
 from database import get_db
+from auth import RequirePrivilege
 
 router = APIRouter(
     prefix="/api/categories",
     tags=["Asset Categories"]
 )
 
-@router.post("/", response_model=schemas.CategoryResponse, status_code=201)
+@router.post("/", response_model=schemas.CategoryResponse, status_code=201, dependencies=[Depends(RequirePrivilege('manage:inventory'))])
 def add_category(category: schemas.CategoryCreate, db: Session = Depends(get_db)):
     """
     Add a New Asset Category

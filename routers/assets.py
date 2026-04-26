@@ -3,13 +3,14 @@ from sqlalchemy.orm import Session
 from typing import List
 import models, schemas
 from database import get_db
+from auth import RequirePrivilege
 
 router = APIRouter(
     prefix="/api/assets",
     tags=["Assets"]
 )
 
-@router.post("/", response_model=schemas.AssetResponse, status_code=201)
+@router.post("/", response_model=schemas.AssetResponse, status_code=201, dependencies=[Depends(RequirePrivilege('manage:inventory'))])
 def add_new_asset(asset: schemas.AssetCreate, db: Session = Depends(get_db)):
     """
     Add a New Asset to Inventory
@@ -56,7 +57,7 @@ def view_specific_asset(asset_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Asset not found")
     return asset
 
-@router.put("/{asset_id}", response_model=schemas.AssetResponse)
+@router.put("/{asset_id}", response_model=schemas.AssetResponse, dependencies=[Depends(RequirePrivilege('manage:inventory'))])
 def edit_asset_details(asset_id: int, asset_data: schemas.AssetCreate, db: Session = Depends(get_db)):
     """
     Edit an Asset's Core Details
@@ -75,7 +76,7 @@ def edit_asset_details(asset_id: int, asset_data: schemas.AssetCreate, db: Sessi
     db.refresh(db_asset)
     return db_asset
 
-@router.patch("/{asset_id}/status", response_model=schemas.AssetResponse)
+@router.patch("/{asset_id}/status", response_model=schemas.AssetResponse, dependencies=[Depends(RequirePrivilege('manage:inventory'))])
 def update_asset_status(asset_id: int, status_update: schemas.AssetStatusUpdate, db: Session = Depends(get_db)):
     """
     Update an Asset's Physical Status

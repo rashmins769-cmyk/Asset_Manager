@@ -13,6 +13,7 @@ class Role(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), nullable=False)
     permissions_level = Column(Integer, default=1)
+    permissions = Column(String, default="") # Comma-separated RBAC permissions
 
 class Employee(Base):
     __tablename__ = "employees"

@@ -1,0 +1,87 @@
+====================================================================
+               AssetLink - Atomic-Scale Feature Mapping
+====================================================================
+
+--- EMPLOYEES & USERS ---
+
+Feature: Add a new employee
+API Endpoint: POST /api/employees
+Database Action: INSERT a new row into the `employees` table with first_name, last_name, email, department_id, and role_id.
+
+Feature: View all employees
+API Endpoint: GET /api/employees
+Database Action: SELECT all rows from the `employees` table, including joins to fetch readable department and role names.
+
+Feature: View a single employee's details
+API Endpoint: GET /api/employees/{id}
+Database Action: SELECT from `employees` table WHERE id = {id}.
+
+Feature: Edit an employee's details
+API Endpoint: PUT /api/employees/{id}
+Database Action: UPDATE the `employees` table for the matching ID to modify fields like name or department.
+
+Feature: Deactivate/Remove an employee
+API Endpoint: DELETE /api/employees/{id}
+Database Action: UPDATE the `employees` table SET is_active = false for the matching ID (Soft delete to keep historical records intact).
+
+--- ASSETS ---
+
+Feature: Add a new asset to inventory
+API Endpoint: POST /api/assets
+Database Action: INSERT a new row into the `assets` table with name, serial_number, category_id, and default status = 'Available'.
+
+Feature: View all assets
+API Endpoint: GET /api/assets
+Database Action: SELECT all rows from the `assets` table, joining the category name for context.
+
+Feature: View a specific asset's details
+API Endpoint: GET /api/assets/{id}
+Database Action: SELECT from the `assets` table WHERE id = {id}.
+
+Feature: Edit an asset's details (e.g., correct a serial number)
+API Endpoint: PUT /api/assets/{id}
+Database Action: UPDATE the `assets` table for the specific ID with new string values.
+
+Feature: Update an asset's status (e.g., mark as 'In Maintenance' or 'Retired')
+API Endpoint: PATCH /api/assets/{id}/status
+Database Action: UPDATE the `assets` table SET status = new_status WHERE id = {id}.
+
+--- ASSET ASSIGNMENTS (CHECK-IN / CHECK-OUT) ---
+
+Feature: Assign an item to an employee (Check-out)
+API Endpoint: POST /api/assignments
+Database Action: 
+1. INSERT a new row into `asset_assignments` (linking asset_id, employee_id, and assigned_by_id).
+2. UPDATE the `assets` table to change status to 'Assigned' WHERE id = asset_id.
+
+Feature: Return an assigned item (Check-in)
+API Endpoint: PUT /api/assignments/{id}/return
+Database Action: 
+1. UPDATE `asset_assignments` SET returned_at = CURRENT_TIMESTAMP and assignment_status = 'Returned' WHERE id = {id}.
+2. UPDATE the `assets` table to change status to 'Available' WHERE id = asset_id.
+
+Feature: View all historical assignments (Audit Log)
+API Endpoint: GET /api/assignments
+Database Action: SELECT all rows from `asset_assignments`, joining employee and asset tables for readability.
+
+Feature: View active assets currently held by a specific employee
+API Endpoint: GET /api/employees/{id}/assignments
+Database Action: SELECT from `asset_assignments` WHERE employee_id = {id} AND assignment_status = 'Active'.
+
+--- DEPARTMENTS & CATEGORIES (UTILITIES) ---
+
+Feature: Add a new department
+API Endpoint: POST /api/departments
+Database Action: INSERT a new row into the `departments` table with a department name.
+
+Feature: View all departments
+API Endpoint: GET /api/departments
+Database Action: SELECT all rows from the `departments` table.
+
+Feature: Add a new asset category
+API Endpoint: POST /api/categories
+Database Action: INSERT a new row into `asset_categories` with name and description.
+
+Feature: View all asset categories
+API Endpoint: GET /api/categories
+Database Action: SELECT all rows from the `asset_categories` table.

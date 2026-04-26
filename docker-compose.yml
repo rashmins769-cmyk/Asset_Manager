@@ -1,9 +1,11 @@
 version: '3.8'
 
 services:
-  hello-python:
+  assetlink-api:
     build: 
       context: .
       dockerfile: Dockerfile
-    image: hello-python-app:latest
-    container_name: hello-python-container
+    image: assetlink-api:latest
+    container_name: assetlink-backend
+    ports:
+      - "8000:8000"

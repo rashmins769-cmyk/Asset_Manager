@@ -4,8 +4,17 @@ FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the Python file into the container
-COPY main.py .
+# Copy the requirements file into the container
+COPY requirements.txt .
 
-# Run the Python script when the container launches
-CMD ["python", "main.py"]
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the actual application files
+COPY . .
+
+# Expose port
+EXPOSE 8000
+
+# Run the FastAPI server via Uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
